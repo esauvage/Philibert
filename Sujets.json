@@ -1,0 +1,108 @@
+{
+  "sujets": [
+    {
+      "personne": 2,
+      "nom": "Niels",
+      "suivants": [
+        {
+          "personne": 0,
+          "nom": "Je"
+        },
+        {
+          "personne": 3,
+          "nom": "Papou Thémis et moi"
+        }
+      ]
+    },
+    {
+      "personne": 0,
+      "nom": "Je",
+      "suivants": [
+        {
+          "personne": 2,
+          "nom": "Niels"
+        }
+      ]
+    },
+    {
+      "personne": 3,
+      "nom": "Papou Thémis et moi",
+      "suivants": [
+        {
+          "personne": 0,
+          "nom": "Je"
+        }
+      ]
+    },
+    {
+      "personne": 4,
+      "nom": "Vous",
+      "suivants": [
+        {
+          "personne": 3,
+          "nom": "Nous"
+        }
+      ]
+    },
+    {
+      "personne": 3,
+      "nom": "Nous",
+      "suivants": [
+        {
+          "personne": 4,
+          "nom": "Vous"
+        }
+      ]
+    }
+  ],
+  "verbes": [
+    {
+      "conjugaisons": [
+        "bois",
+        "bois",
+        "boit",
+        "buvons",
+        "buvez",
+        "boivent"
+      ],
+      "lemme": "boire",
+      "suivants": [
+        {
+          "conjugaisons": [
+            "mange",
+            "manges",
+            "mange",
+            "mangeons",
+            "mangez",
+            "mangent"
+          ],
+          "lemme": "manger"
+        }
+      ]
+    },
+    {
+      "conjugaisons": [
+        "mange",
+        "manges",
+        "mange",
+        "mangeons",
+        "mangez",
+        "mangent"
+      ],
+      "lemme": "manger",
+      "suivants": [
+        {
+          "conjugaisons": [
+            "bois",
+            "bois",
+            "boit",
+            "buvons",
+            "buvez",
+            "boivent"
+          ],
+          "lemme": "boire"
+        }
+      ]
+    }
+  ]
+}
