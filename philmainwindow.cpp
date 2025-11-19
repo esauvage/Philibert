@@ -3,6 +3,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include "analyseur.h"
+
 PhilMainWindow::PhilMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::PhilMainWindow), _courVerbe(QStringList(), "")
@@ -138,22 +140,6 @@ void PhilMainWindow::on_actionOuvrir_triggered()
         }
     }
 
-    // QTextStream in(&file);
-
-    // while(!in.atEnd()) {
-    //     QString line = in.readLine();
-    //     QStringList fields = line.split(", ");
-    //     Sujet s(fields.takeFirst().toInt(), fields.takeFirst());
-
-    //     QList<Sujet> sujets;
-
-    //     while (!fields.isEmpty())
-    //     {
-    //         sujets << Sujet (fields.takeFirst().toInt(), fields.takeFirst());
-    //     }
-    //     _sujets.insert(s, sujets);
-    // }
-
     file.close();
 }
 
@@ -164,6 +150,29 @@ void PhilMainWindow::on_btnDire_clicked()
 
 void PhilMainWindow::on_actionAnalyser_triggered()
 {
+    //On demande un fichier. "Analyse.txt" est bien
+    QString fileName = QFileDialog::getOpenFileName();
+    if (fileName.isEmpty()) return; //On n'a pas de nom de fichier, tant pis
 
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly)) {
+        //On n'a pas pu ouvrir le fichier
+        QMessageBox::information(0, "error", file.errorString());
+        return;
+    }
+
+    Analyseur analyseur;//On a besoin d'un analyseur
+    QTextStream in(&file);
+    //On dit : le fichier contient une phrase sur une seule ligne.
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList phrases = line.split(".", Qt::SkipEmptyParts); //Une phrase se termine par un point.
+        for (auto & p : phrases) {
+            if (p.isEmpty()) break;//Vide = fini
+            while (p[0] == ' ') p.removeFirst(); //On supprime les espaces devant.
+            if (p[0] != p[0].toUpper()) break; // Une phrase doit commencer par une majuscule.
+            analyseur.analyse(p, _verbes.keys());
+        }
+    }
 }
 

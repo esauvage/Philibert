@@ -29,6 +29,8 @@ private slots:
     void on_actionOuvrir_triggered();
     void on_btnDire_clicked();
 
+    void on_actionAnalyser_triggered();
+
 private:
     Ui::PhilMainWindow *ui;
     Sujet _courant;

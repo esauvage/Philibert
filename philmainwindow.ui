@@ -37,7 +37,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -45,6 +45,7 @@
      <string>Fichier</string>
     </property>
     <addaction name="actionOuvrir"/>
+    <addaction name="actionAnalyser"/>
    </widget>
    <addaction name="menuFichier"/>
   </widget>
@@ -52,6 +53,11 @@
   <action name="actionOuvrir">
    <property name="text">
     <string>&amp;Ouvrir</string>
+   </property>
+  </action>
+  <action name="actionAnalyser">
+   <property name="text">
+    <string>Analyser</string>
    </property>
   </action>
  </widget>
