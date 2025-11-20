@@ -171,7 +171,8 @@ void PhilMainWindow::on_actionAnalyser_triggered()
             if (p.isEmpty()) break;//Vide = fini
             while (p[0] == ' ') p.removeFirst(); //On supprime les espaces devant.
             if (p[0] != p[0].toUpper()) break; // Une phrase doit commencer par une majuscule.
-            analyseur.analyse(p, _verbes.keys());
+            analyseur.analyse(p, _verbes.keys(), _sujets);
+            _sujets = analyseur.sujets();
         }
     }
 }

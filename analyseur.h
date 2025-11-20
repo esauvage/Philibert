@@ -11,8 +11,12 @@ class Analyseur
 {
 public:
     Analyseur();
-    void analyse(const QString &phrase, const QList<Verbe> verbes);
+    void analyse(const QString &phrase, const QList<Verbe> verbes, const QMap<Sujet, QList<Sujet> > &sujets);
     void trouveSujet(const QString &phrase, int personne); //On trouve un sujet associé à un verbe conjugué, on a donc la personne
+    void trouveVerbe(const QString &phrase, int personne); //On trouve un verbe associé à un sujet, on a donc la personne
+
+    QMap<Sujet, QList<Sujet> > sujets() const;
+
 private:
     Sujet _sujetCour;
     QMap<Sujet, QList<Sujet>> _sujets;

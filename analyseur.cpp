@@ -1,12 +1,14 @@
 #include "analyseur.h"
 
 #include <QStringList>
+#include <QRegularExpression>
 #include <QMessageBox>
 
 Analyseur::Analyseur() {}
 
-void Analyseur::analyse(const QString &phrase, QList <Verbe> verbes)
+void Analyseur::analyse(const QString &phrase, QList <Verbe> verbes, const QMap<Sujet, QList<Sujet> > &sujets)
 {
+    _sujets = sujets;
     QStringList mots = phrase.split(' '); //On sépare la phrase en mots
     //On va chercher le mot dans ce qu'on connait déjà
     for (auto & m : mots) {
@@ -21,6 +23,13 @@ void Analyseur::analyse(const QString &phrase, QList <Verbe> verbes)
                 trouveSujet(phrase.left(phrase.indexOf(m)), personne);
             }
         }
+    }
+    for (auto & s : sujets.keys()) {
+        // QRegularExpression regex(s.nom(), QRegularExpression::CaseInsensitiveOption);
+        // QRegularExpressionMatch match = regex.match(phrase);
+        // if (match.hasMatch()) {
+        //     trouveVerbe(phrase.right(phrase.indexOf(m)), s.personne());
+        // }
     }
 }
 
@@ -38,5 +47,15 @@ void Analyseur::trouveSujet(const QString &phrase, int personne)
         _sujets.insert(s, QList<Sujet>());//Le cas échéant, on l'ajoute à la liste des sujets.
     }
     _sujetCour = s;
-    QMessageBox::information(nullptr, "Sujet :", sujet);
+}
+
+void Analyseur::trouveVerbe(const QString &phrase, int personne)
+{
+    if (phrase.isEmpty()) return;
+
+}
+
+QMap<Sujet, QList<Sujet> > Analyseur::sujets() const
+{
+    return _sujets;
 }
