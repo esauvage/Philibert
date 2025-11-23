@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     analyseur.cpp \
+    etat.cpp \
     main.cpp \
     philmainwindow.cpp \
     sujet.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     analyseur.h \
+    etat.h \
     philmainwindow.h \
     sujet.h \
     verbe.h

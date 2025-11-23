@@ -7,7 +7,7 @@
 class Verbe
 {
 public:
-    Verbe(QStringList conjugaisons, QString lemme);
+    Verbe(QStringList conjugaisons = QStringList(), QString lemme = "");
     QString conjuguer(int personne) const;
     QString lemme() const;
     bool operator < (const Verbe & b) const;
