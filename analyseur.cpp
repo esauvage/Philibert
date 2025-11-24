@@ -25,7 +25,6 @@ void Analyseur::analyse(const QString &phrase, const QMap<Verbe, QList<Verbe>> &
     }
     for (auto & s : _sujets.keys()) {
         if (phrase.toLower().contains(s.nom().toLower(), Qt::CaseInsensitive)) {
-            auto pos = phrase.toLower().indexOf(s.nom().toLower());
             trouveVerbe(phrase.toLower().right(phrase.length() - phrase.toLower().indexOf(s.nom().toLower()) - s.nom().length()), s.personne());
         }
     }
@@ -35,6 +34,7 @@ void Analyseur::trouveSujet(const QString &phrase, int personne)
 {
     if (phrase.isEmpty()) return;
     QString sujet = phrase.split(",", Qt::SkipEmptyParts).last().toLower(); // Rien pour l'instant entre le sujet et le verbe
+    if (sujet.isEmpty()) return;
     while (!sujet[0].isLetter()) sujet.remove(0, 1);
     while (!sujet.last(1)[0].isLetter()) sujet.remove(sujet.length() - 1, 1);
     Sujet s(personne, sujet);
@@ -51,6 +51,7 @@ void Analyseur::trouveVerbe(const QString &phrase, int personne)
 {
     if (phrase.isEmpty()) return;
     auto verbe = phrase.split(",", Qt::SkipEmptyParts).last().toLower(); // Rien pour l'instant entre le sujet et le verbe
+    if (verbe.isEmpty()) return;
     while (!verbe[0].isLetter()) verbe.remove(0, 1);
     while (!verbe.last(1)[0].isLetter()) verbe.remove(verbe.length() - 1, 1);
     QStringList conjugaison;
@@ -80,4 +81,9 @@ void Analyseur::trouveVerbe(const QString &phrase, int personne)
 QMap<Sujet, QList<Sujet> > Analyseur::sujets() const
 {
     return _sujets;
+}
+
+QMap<Verbe, QList<Verbe> > Analyseur::verbes() const
+{
+    return _verbes;
 }

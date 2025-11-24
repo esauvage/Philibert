@@ -17,6 +17,8 @@ public:
 
     QMap<Sujet, QList<Sujet> > sujets() const;
 
+    QMap<Verbe, QList<Verbe> > verbes() const;
+
 private:
     Sujet _sujetCour;
     Verbe _verbeCour;

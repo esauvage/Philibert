@@ -10,20 +10,6 @@ PhilMainWindow::PhilMainWindow(QWidget *parent)
     , ui(new Ui::PhilMainWindow), _courVerbe(QStringList(), "")
 {
     ui->setupUi(this);
-
-    // QStringList conjugaisons;
-    // conjugaisons << "mange" << "manges" << "mange" << "mangeons" << "mangez" << "mangent";
-
-    // _courVerbe = Verbe(conjugaisons, "manger");
-
-    // _verbes << _courVerbe;
-    // _verbes.insert(_courVerbe, QList<Verbe>());
-    // conjugaisons.clear();
-    // conjugaisons << "bois" << "bois" << "boit" << "buvons" << "buvez" << "boivent";
-    // _verbes << Verbe(conjugaisons, "boire");
-    // _verbes.insert(Verbe(conjugaisons, "boire"), QList<Verbe>());
-    // _sujets << Sujet(2, "Toto");
-    // _sujets << Sujet(3, "Nous");
 }
 
 PhilMainWindow::~PhilMainWindow()
@@ -35,8 +21,9 @@ QString PhilMainWindow::dire()
 {
     QString ret;
 
-    auto l = _sujets[_courant];
-    if ((_courant.personne() < 0) || l.isEmpty())
+    //auto l = _sujets[_courant]; Ca crée un élément vide dans la liste de sujets.
+    auto l = _courant.personne() >= 0 ? _sujets[_courant] : QList<Sujet>();
+    if (l.isEmpty())
     {
         // Si il n'y a pas de sujet courant, on en tire un.
         l = _sujets.keys();
@@ -44,14 +31,14 @@ QString PhilMainWindow::dire()
     auto index = QRandomGenerator::global()->bounded(0, l.length());
     _courant = l[index];
 
-    auto u = _verbes[_courVerbe];
-    if (_courVerbe.lemme().isEmpty() || u.isEmpty())
+    auto v = _courVerbe.lemme().isEmpty() ? QList<Verbe>() : _verbes[_courVerbe];
+    if (v.isEmpty())
     {
         // Si il n'y a pas de sujet courant, on en tire un.
-        u = _verbes.keys();
+        v = _verbes.keys();
     }
-    auto indexVerbe = QRandomGenerator::global()->bounded(0, u.length());
-    _courVerbe = u[indexVerbe];
+    auto indexVerbe = QRandomGenerator::global()->bounded(0, v.length());
+    _courVerbe = v[indexVerbe];
 
     ret = _courant.nom() + " " + _courVerbe.conjuguer(_courant.personne());
 
@@ -173,6 +160,7 @@ void PhilMainWindow::on_actionAnalyser_triggered()
             if (p[0] != p[0].toUpper()) break; // Une phrase doit commencer par une majuscule.
             analyseur.analyse(p, _verbes, _sujets);
             _sujets = analyseur.sujets();
+            _verbes = analyseur.verbes();
         }
     }
 }
