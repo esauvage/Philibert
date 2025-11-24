@@ -88,7 +88,7 @@ void PhilMainWindow::on_actionOuvrir_triggered()
             for (auto j = 0; j < jsonSuivants.size(); ++j) {
                 //Il s'agit d'un sujet
                 auto jsonS = jsonSuivants[j].toObject();
-                lSuiv << Sujet(jsonS["personne"].toInt(), jsonS["nom"].toString());
+                lSuiv << Sujet(jsonS["personne"].toInt(), jsonS["nom"].toString().toLower());
             }
             // On crée le sujet et on l'insère dans la QMap
             _sujets.insert(Sujet(jsonSujet["personne"].toInt(), jsonSujet["nom"].toString()), lSuiv);
@@ -110,7 +110,7 @@ void PhilMainWindow::on_actionOuvrir_triggered()
             for (auto j = 0; j < jsonC.size(); ++j)
             {
                 auto jsonV = jsonC[j];
-                conjugaisons << jsonV.toString();
+                conjugaisons << jsonV.toString().toLower();
             }
 
             //On récupère la liste des verbes suivants
@@ -131,7 +131,7 @@ void PhilMainWindow::on_actionOuvrir_triggered()
                 }
                 //Il s'agit d'un verbe
                 auto jsonV = jsonSuivants[j].toObject();
-                lSuiv << Verbe(conjugaisons, jsonV["lemme"].toString());
+                lSuiv << Verbe(conjugaisons, jsonV["lemme"].toString().toLower());
             }
             QString lemme = jsonVerbe["lemme"].toString();
             // On insère le verbe dans la QMap

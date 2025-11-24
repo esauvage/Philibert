@@ -1,8 +1,6 @@
 #include "analyseur.h"
 
 #include <QStringList>
-#include <QRegularExpression>
-#include <QMessageBox>
 
 Analyseur::Analyseur() {}
 
@@ -10,10 +8,10 @@ void Analyseur::analyse(const QString &phrase, const QMap<Verbe, QList<Verbe>> &
 {
     _sujets = sujets;
     _verbes = verbes;
-    QStringList mots = phrase.split(' '); //On sépare la phrase en mots
+    QStringList mots = phrase.toLower().split(' '); //On sépare la phrase en mots
     //On va chercher le mot dans ce qu'on connait déjà
     for (auto & m : mots) {
-        for (auto & v : verbes.keys()) {
+        for (auto & v : _verbes.keys()) {
             int personne = -1;
             for (int i = 0; i < 6; ++i) {
                 if (m.toLower() == v.conjuguer(i)) {
@@ -21,13 +19,14 @@ void Analyseur::analyse(const QString &phrase, const QMap<Verbe, QList<Verbe>> &
                 }
             }
             if (personne >= 0) {
-                trouveSujet(phrase.left(phrase.indexOf(m)), personne);
+                trouveSujet(phrase.toLower().left(phrase.toLower().indexOf(m)), personne);
             }
         }
     }
-    for (auto & s : sujets.keys()) {
-        if (phrase.contains(s.nom(), Qt::CaseInsensitive)) {
-            trouveVerbe(phrase.right(phrase.length() - phrase.indexOf(s.nom()) - s.nom().length()), s.personne());
+    for (auto & s : _sujets.keys()) {
+        if (phrase.toLower().contains(s.nom().toLower(), Qt::CaseInsensitive)) {
+            auto pos = phrase.toLower().indexOf(s.nom().toLower());
+            trouveVerbe(phrase.toLower().right(phrase.length() - phrase.toLower().indexOf(s.nom().toLower()) - s.nom().length()), s.personne());
         }
     }
 }
@@ -36,8 +35,8 @@ void Analyseur::trouveSujet(const QString &phrase, int personne)
 {
     if (phrase.isEmpty()) return;
     QString sujet = phrase.split(",", Qt::SkipEmptyParts).last().toLower(); // Rien pour l'instant entre le sujet et le verbe
-    while (!sujet[0].isLetter()) sujet.removeFirst();
-    while (!sujet.last(1)[0].isLetter()) sujet.removeLast();
+    while (!sujet[0].isLetter()) sujet.remove(0, 1);
+    while (!sujet.last(1)[0].isLetter()) sujet.remove(sujet.length() - 1, 1);
     Sujet s(personne, sujet);
     if (_sujetCour.personne()>=0) {
         _sujets[_sujetCour].append(s);//On ajoute aux états suivants l'état courant ce qu'on vient de trouver.
@@ -52,8 +51,8 @@ void Analyseur::trouveVerbe(const QString &phrase, int personne)
 {
     if (phrase.isEmpty()) return;
     auto verbe = phrase.split(",", Qt::SkipEmptyParts).last().toLower(); // Rien pour l'instant entre le sujet et le verbe
-    while (!verbe[0].isLetter()) verbe.removeFirst();
-    while (!verbe.last(1)[0].isLetter()) verbe.removeLast();
+    while (!verbe[0].isLetter()) verbe.remove(0, 1);
+    while (!verbe.last(1)[0].isLetter()) verbe.remove(verbe.length() - 1, 1);
     QStringList conjugaison;
     for (; conjugaison.length() < personne;) {
         conjugaison  << "";
